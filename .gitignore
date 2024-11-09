@@ -1,0 +1,58 @@
+*.DS_Store
+
+
+# PlatformIO Build files
+/.pio
+/.vscode
+/.clangd
+
+# User-override files
+
+# IntelliSense
+/.ide
+
+# Other files
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+
+*.log
+
+# DS_Store (Mac)
+.DS_Store
+
+# Thumbs.db (Windows)
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Library dependencies
+/.lib
+
+# SConsign files
+.sconsign.dblite
+
+# EEPROM and other non-source files
+*.eep
+*.hex
+*.elf
+*.bin
+
+# Compiled static libraries
+*.a
+
+# Project-specific settings
+.idea/
+
+# JetBrains project files
+/.idea
+/out
+
+# General backup files
+*.bak
+*.sav
+
