@@ -1,17 +1,25 @@
 #include <Adafruit_NeoPixel.h>
 #include <Arduino.h>
 
-#define PIN            2  // Pin where the NeoPixel strip is connected
-#define NUMPIXELS      10 // Number of LEDs in the strip
+#define NUM_STRIPS     5  // Number of strips connected (Pins 2 to 6)
+#define NUMPIXELS      10 // Number of LEDs in each strip
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strips[NUM_STRIPS] = {
+  Adafruit_NeoPixel(NUMPIXELS, 2, NEO_GRB + NEO_KHZ800),
+  Adafruit_NeoPixel(NUMPIXELS, 3, NEO_GRB + NEO_KHZ800),
+  Adafruit_NeoPixel(NUMPIXELS, 4, NEO_GRB + NEO_KHZ800),
+  Adafruit_NeoPixel(NUMPIXELS, 5, NEO_GRB + NEO_KHZ800),
+  Adafruit_NeoPixel(NUMPIXELS, 6, NEO_GRB + NEO_KHZ800)
+};
 
 void simulateCandleFire();
 
 void setup() {
-  strip.begin();
-  strip.setBrightness(200);
-  strip.show(); // Initialize all pixels to 'off'
+  for (int i = 0; i < NUM_STRIPS; i++) {
+    strips[i].begin();
+    strips[i].setBrightness(200);
+    strips[i].show(); // Initialize all pixels to 'off'
+  }
 }
 
 void loop() {
@@ -32,29 +40,31 @@ void simulateCandleFire() {
     previousMillis = currentMillis;
     flickerInterval = random(20, 120); // Update interval with a new random value
 
-    for (int i = 0; i < NUMPIXELS; i++) {
-      // Create a random flicker effect with warm colors similar to candlelight
-      bool isOff = false;
-      if (i >= flickerStart && i < flickerEnd) {
-        isOff = random(0, 100) < 70; // Higher chance for these LEDs to go off simultaneously
-      } else if (i < NUMPIXELS / 3) {
-        isOff = random(0, 100) < 20; // Lower chance for lower LEDs to flicker off
-      } else {
-        isOff = random(0, 100) < 40; // Moderate chance for middle LEDs to flicker off
-      }
+    for (int s = 0; s < NUM_STRIPS; s++) {
+      for (int i = 0; i < NUMPIXELS; i++) {
+        // Create a random flicker effect with warm colors similar to candlelight
+        bool isOff = false;
+        if (i >= flickerStart && i < flickerEnd) {
+          isOff = random(0, 100) < 70; // Higher chance for these LEDs to go off simultaneously
+        } else if (i < NUMPIXELS / 3) {
+          isOff = random(0, 100) < 20; // Lower chance for lower LEDs to flicker off
+        } else {
+          isOff = random(0, 100) < 40; // Moderate chance for middle LEDs to flicker off
+        }
 
-      if (isOff) {
-        strip.setPixelColor(i, strip.Color(0, 0, 0)); // Turn off the LED
-      } else {
-        int flicker = random(180, 255); // Random brightness to simulate flickering, more emphasis on brighter orange tones
-        int red = flicker;
-        int green = random(80, 130); // Adjusted green value to create a more orange tone
-        int blue = random(0, 20); // Reduced blue range to maintain a warm, orange tone
+        if (isOff) {
+          strips[s].setPixelColor(i, strips[s].Color(0, 0, 0)); // Turn off the LED
+        } else {
+          int flicker = random(180, 255); // Random brightness to simulate flickering, more emphasis on brighter orange tones
+          int red = flicker;
+          int green = random(80, 130); // Adjusted green value to create a more orange tone
+          int blue = random(0, 20); // Reduced blue range to maintain a warm, orange tone
 
-        strip.setPixelColor(i, strip.Color(red, green, blue));
+          strips[s].setPixelColor(i, strips[s].Color(red, green, blue));
+        }
       }
+      strips[s].show();
     }
-    strip.show();
 
     // Update flicker range to create a rising and falling effect
     if (rising) {
