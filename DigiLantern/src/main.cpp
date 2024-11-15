@@ -27,7 +27,7 @@ int bluePx = 5;
 // Animation time variables, with recommendations
 int burnDepth = 6; // How much green dips below grnHigh for normal burn
 int flutterDepth = 20; // Maximum dip for flutter
-int cycleTime = 120; // Duration of one dip in milliseconds
+int cycleTime = 200; // Duration of one dip in milliseconds
 
 // Variables for controlling animation dynamics
 int fDelay;
